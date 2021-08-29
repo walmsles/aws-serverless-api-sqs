@@ -1,0 +1,66 @@
+
+
+service: api-sqs-dynamodb
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+plugins:
+  - serverless-python-requirements
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: python3.9
+  lambdaHashingVersion: 20201221
+  region: ap-southeast-2
+  tracing:
+    apiGateway: true
+    lambda: true
+  apiGateway:
+    apiKeySourceType: HEADER
+    minimumCompressionSize: 1024
+    apiKeys:
+      - ${self:service}-{$self:custom.stage}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+          Resource:
+            - !GetAtt sqs.Arn
+        - Effect: Allow
+          Action:
+            - xray:PutTraceSegment
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+          Resource:
+            - "*"
+
+custom:
+  stage: ${opt:stage, "dev"}
+  resourcePrefix: ${self:service}-${self:custom.stage}
+
+functions:
+  api:
+    handler: functions/api.handler
+    events:
+      - http:
+          method: POST
+          path: /submit
+          private: true
+    environment:
+      THE_QUEUE: !Ref sqs
+  
+  sqs-processor:
+    handler: functions/sqs-processor.handler
+    events:
+      - sqs:
+          arn: !GetAtt sqs.Arn
+
+resources:
+ Resources:
+  sqs:
+    Type: AWS::SQS::Queue
