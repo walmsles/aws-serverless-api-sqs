@@ -11,3 +11,14 @@ This lambda code uses APIProxyGatewayEvent models to make interacting with the e
 
 ## SQS Processing Lambda - sqs-processor.py
 This lambda leverages the SQS Batch processing utility from Powertools and is an invaluable utility for SQS processing.  
+
+# Deploying the Project to your AWS Account
+Deployment is a straight forward process and assumes you have aws-cli installed, connected to your account and working.  If you need any help getting that going I have a blog articl on allowing AWS Cli access to your account with MFA enabled, catch it [here](http://www.walmsles.io/posts/securing-aws-cli/).  
+
+This repo also assumes you have python 3.9 and [poetry](https://python-poetry.org/) installed and working :-)
+
+To deploy this project you will need to do the following:
+
+    - npm install
+    - poetry install
+    - npx sls deploy
