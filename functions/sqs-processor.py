@@ -8,7 +8,7 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_xray_lambda_segment_shim import get_sqs_triggered_recorder
 
 logger = Logger()
-tracer = Tracer()
+tracer = Tracer(patch_modules=[ "boto3" ])
 lambda_context: LambdaContext = {}
 
 # log record and complete
