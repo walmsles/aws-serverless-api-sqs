@@ -25,15 +25,8 @@ def process_it(record):
     
     return True
 
-def store_context(handler, event, context):
-    lambda_context = context
-    return handler(event, context)
-
-
-
 @logger.inject_lambda_context
 @tracer.capture_lambda_handler
-@store_context
 @sqs_batch_processor(record_handler=process_it)
 def handler(event, context):
     return True
