@@ -20,12 +20,22 @@ This lambda leverages the SQS Batch processing utility from Powertools and is an
 
 Deployment is a straight forward process and assumes you have aws-cli installed, connected to your account and working.  If you need any help getting that going I have a blog article on allowing AWS Cli access to your account with MFA enabled, catch it [here](http://www.walmsles.io/posts/securing-aws-cli/).  
 
-This repo also assumes you have python 3.9 and [poetry](https://python-poetry.org/) installed and working :-)
+This repo also assumes you have python 3.9, [npm](https://github.com/nodesource/distributions) and [poetry](https://python-poetry.org/) installed and working :-)
 
 To deploy this project you will need to do the following:
 
-    - pip3 install boto3
-    - pip3 install aws-lambda-powertools
-    - npm install
-    - poetry install
-    - npx sls deploy
+```ShellSession
+pip3 install boto3 && pip3 install aws-lambda-powertools && sudo apt install npm -y
+```
+
+```ShellSession
+npm install
+```
+
+```ShellSession
+poetry install
+```
+
+```ShellSession
+npx sls deploy
+```
