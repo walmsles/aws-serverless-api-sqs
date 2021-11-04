@@ -24,6 +24,8 @@ This repo also assumes you have python 3.9 and [poetry](https://python-poetry.or
 
 To deploy this project you will need to do the following:
 
+    - pip3 install boto3
+    - pip3 install aws-lambda-powertools
     - npm install
     - poetry install
     - npx sls deploy
