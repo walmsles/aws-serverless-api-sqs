@@ -6,9 +6,8 @@ authors = [""]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-aws-lambda-powertools = "^1.17.0"
 aws-xray-sdk = "^2.8.0"
-aws-xray-lambda-segment-shim = "^0.5.3"
+aws-lambda-powertools = "^2.2.0"
 
 [tool.poetry.dev-dependencies]
 

@@ -2,32 +2,27 @@ import json
 from aws_lambda_powertools import (
     Logger, Tracer
 )
-from aws_lambda_powertools.utilities.batch import sqs_batch_processor    
-from aws_lambda_powertools.utilities.typing import LambdaContext
-
-from aws_xray_lambda_segment_shim import get_sqs_triggered_recorder
+from aws_lambda_powertools.utilities.batch import BatchProcessor, batch_processor, EventType  
+from aws_lambda_powertools.utilities.data_classes.sqs_event import SQSRecord
 
 logger = Logger()
-tracer = Tracer(patch_modules=[ "boto3" ])
-lambda_context: LambdaContext = {}
+tracer = Tracer()
+processor = BatchProcessor(event_type=EventType.SQS)
 
 # log record and complete
-def process_it(record):
+def process_it(record: SQSRecord):
     trace_header = record.get('attributes', {}).get('AWSTraceHeader', '')
     logger.info('processing it')
     logger.info(record)
     logger.info(trace_header)
-    recorder = get_sqs_triggered_recorder(
-        record=record,
-        lambda_request_id=lambda_context.aws_request_id,
-        lambda_arn=lambda_context.invoked_function_arn
-    )
     
+    # Do Nothing ... end of demo code
+
     return True
 
 @logger.inject_lambda_context
 @tracer.capture_lambda_handler
-@sqs_batch_processor(record_handler=process_it)
+@batch_processor(processor=processor, record_handler=process_it)
 def handler(event, context):
-    return True
+    return processor.response()
 
